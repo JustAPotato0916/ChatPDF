@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { eq } from "drizzle-orm"
 import React from "react"
 import ChatSideBar from "@/components/ChatSideBar"
+import PDFViewer from "@/components/PDFViewer"
 
 type Props = {
     params: {
@@ -25,14 +26,16 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         return redirect("/")
     }
 
+    const currentChat = _chats.find(chat => chat.id === parseInt(chatId))
+
     return (
-        <div className="flex max-h-screen overflow-scroll">
-            <div className="flex w-full max-h-screen overflow-scroll">
+        <div className="flex max-h-screen">
+            <div className="flex w-full max-h-screen">
                 <div className="flex-[1] max-w-xs">
                     <ChatSideBar chats={_chats} chatId={parseInt(chatId)} />
                 </div>
-                <div className="max-h-screen p-4 overflow-scroll flex-[5]">
-                    {/* PDFViewer */}
+                <div className="max-h-screen p-4 flex-[5]">
+                    <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
                 </div>
                 <div className="flex-[3] border-l-4 border-l-slate-200">
                     {/* ChatComponent */}
